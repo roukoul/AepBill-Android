@@ -59,37 +59,37 @@ fun MenuScreen(
 
     val menuItems = listOf(
         MenuItem(
-            title = "About",
+            title = "حول",
             icon = Icons.Default.Info,
             gradient = PrimaryGradientColors,
             action = onNavigateToAbout
         ),
         MenuItem(
-            title = "Configuration Aepbill",
+            title = "إعدادات الجهاز",
             icon = Icons.Default.Settings,
             gradient = PrimaryGradientColors,
             action = { onOpenWebPage("/") }
         ),
         MenuItem(
-            title = "WiFi Config",
+            title = "إعدادات WiFi",
             icon = Icons.Default.Star,
             gradient = SuccessGradientColors,
             action = { onOpenWebPage("/wifiConfig") }
         ),
         MenuItem(
-            title = "Alarms",
+            title = "التنبيهات",
             icon = Icons.Default.Notifications,
             gradient = SuccessGradientColors,
             action = onNavigateToAlarms
         ),
         MenuItem(
-            title = "Restart",
+            title = "إعادة التشغيل",
             icon = Icons.Default.Refresh,
             gradient = WarningGradientColors,
             action = { showRestartDialog = true }
         ),
         MenuItem(
-            title = "Factory Reset",
+            title = "ضبط المصنع",
             icon = Icons.Default.Delete,
             gradient = DangerGradientColors,
             action = { showFactoryResetDialog = true }
@@ -99,25 +99,25 @@ fun MenuScreen(
     if (showRestartDialog) {
         AlertDialog(
             onDismissRequest = { showRestartDialog = false },
-            title = { Text("Restart Device?") },
-            text = { Text("Are you sure you want to restart the ESP32? This will interrupt the connection.") },
+            title = { Text("إعادة تشغيل الجهاز؟") },
+            text = { Text("هل أنت متأكد من رغبتك في إعادة تشغيل الجهاز؟ سيتم قطع الاتصال مؤقتا.") },
             confirmButton = {
                 TextButton(
                     onClick = {
                         showRestartDialog = false
                         scope.launch {
-                            restartMessage = "Restarting..."
+                            restartMessage = "جاري إعادة التشغيل..."
                             val result = espRepository.restartDevice()
-                            restartMessage = if (result.isSuccess) "Device Restarted! Reconnecting..." else "Restart Failed!"
+                            restartMessage = if (result.isSuccess) "تمت إعادة التشغيل! جاري إعادة الاتصال..." else "فشلت إعادة التشغيل!"
                         }
                     }
                 ) {
-                    Text("Restart", color = Color.Red)
+                    Text("إعادة التشغيل", color = Color.Red)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showRestartDialog = false }) {
-                    Text("Cancel")
+                    Text("إلغاء")
                 }
             },
             containerColor = SurfaceDark,
@@ -129,10 +129,10 @@ fun MenuScreen(
     if (restartMessage != null) {
         AlertDialog(
             onDismissRequest = { restartMessage = null },
-            title = { Text("Status") },
+            title = { Text("الحالة") },
             text = { Text(restartMessage!!) },
             confirmButton = {
-                TextButton(onClick = { restartMessage = null }) { Text("OK") }
+                TextButton(onClick = { restartMessage = null }) { Text("موافق") }
             },
             containerColor = SurfaceDark,
             titleContentColor = Color.White,
@@ -143,25 +143,25 @@ fun MenuScreen(
     if (showFactoryResetDialog) {
         AlertDialog(
             onDismissRequest = { showFactoryResetDialog = false },
-            title = { Text("⚠️ Factory Reset?") },
-            text = { Text("This will DELETE all alarms, passwords, and WiFi settings. Are you sure?") },
+            title = { Text("⚠️ ضبط المصنع؟") },
+            text = { Text("سيؤدي هذا إلى حذف جميع التنبيهات وكلمات المرور وإعدادات WiFi. هل أنت متأكد؟") },
             confirmButton = {
                 TextButton(
                     onClick = {
                         showFactoryResetDialog = false
                         scope.launch {
-                            restartMessage = "Resetting..."
+                            restartMessage = "جاري المسح..."
                             val result = espRepository.factoryReset()
-                            restartMessage = if (result.isSuccess) "Device Reset! Rebooting..." else "Reset Failed!"
+                            restartMessage = if (result.isSuccess) "تمت إعادة الضبط! جاري التشغيل..." else "فشل إعادة الضبط!"
                         }
                     }
                 ) {
-                    Text("DELETE ALL", color = Color.Red)
+                    Text("حذف الكل", color = Color.Red)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showFactoryResetDialog = false }) {
-                    Text("Cancel")
+                    Text("إلغاء")
                 }
             },
             containerColor = SurfaceDark,
@@ -178,7 +178,7 @@ fun MenuScreen(
     ) {
         Column {
             Text(
-                text = "Menu",
+                text = "القائمة",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,

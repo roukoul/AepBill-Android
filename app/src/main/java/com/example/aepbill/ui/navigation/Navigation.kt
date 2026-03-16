@@ -25,11 +25,11 @@ import com.example.aepbill.ui.screens.MenuScreen
 import com.example.aepbill.ui.screens.SettingsScreen
 
 sealed class Screen(val route: String, val title: String, val icon: ImageVector) {
-    object Dashboard : Screen("dashboard", "Dashboard", Icons.Default.Home)
-    object Menu : Screen("menu", "Menu", Icons.Default.Menu)
-    object Settings : Screen("settings", "Settings", Icons.Default.Settings)
-    object About : Screen("about", "About", Icons.Default.Info)
-    object Alarms : Screen("alarms", "Alarms", Icons.Default.Notifications)
+    object Dashboard : Screen("dashboard", "لوحة التحكم", Icons.Default.Home)
+    object Menu : Screen("menu", "القائمة", Icons.Default.Menu)
+    object Settings : Screen("settings", "الإعدادات", Icons.Default.Settings)
+    object About : Screen("about", "حول", Icons.Default.Info)
+    object Alarms : Screen("alarms", "التنبيهات", Icons.Default.Notifications)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -61,7 +61,7 @@ fun DashboardScreen(
             ) {
             // Header with Gradient Text
             Text(
-                text = "AepBill Dashboard",
+                text = "لوحة تحكم AepBill",
                 style = TextStyle(
                     fontSize = 32.sp,
                     fontWeight = FontWeight.ExtraBold,
@@ -96,13 +96,13 @@ fun DashboardScreen(
                                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                                 ) {
                                     InfoCard(
-                                        title = "Relay S",
+                                        title = "المرحل S",
                                         value = if (status.relay) "ON" else "OFF",
                                         gradient = if (status.relay) SuccessGradientColors else DangerGradientColors,
                                         modifier = Modifier.weight(1f)
                                     )
                                     InfoCard(
-                                        title = "Relay A",
+                                        title = "المرحل A",
                                         value = if (status.relay2) "ON" else "OFF",
                                         gradient = if (status.relay2) SuccessGradientColors else DangerGradientColors,
                                         modifier = Modifier.weight(1f)
@@ -114,13 +114,13 @@ fun DashboardScreen(
                                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                                 ) {
                                     InfoCard(
-                                        title = "Relay B",
+                                        title = "المرحل B",
                                         value = if (status.relay3) "ON" else "OFF",
                                         gradient = if (status.relay3) SuccessGradientColors else DangerGradientColors,
                                         modifier = Modifier.weight(1f)
                                     )
                                     InfoCard(
-                                        title = "Relay C",
+                                        title = "المرحل C",
                                         value = if (status.relay4) "ON" else "OFF",
                                         gradient = if (status.relay4) SuccessGradientColors else DangerGradientColors,
                                         modifier = Modifier.weight(1f)
@@ -132,13 +132,13 @@ fun DashboardScreen(
                                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                                 ) {
                                     InfoCard(
-                                        title = "Time",
+                                        title = "الوقت",
                                         value = status.time.substringAfter(" "), // Show only time
                                         gradient = PrimaryGradientColors,
                                         modifier = Modifier.weight(1f)
                                     )
                                     InfoCard(
-                                        title = "Next Alarm",
+                                        title = "المنبه القادم",
                                         value = status.nextAlarm ?: "--:--",
                                         gradient = PrimaryGradientColors,
                                         modifier = Modifier.weight(1f)
@@ -150,7 +150,7 @@ fun DashboardScreen(
                                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                                 ) {
                                     InfoCard(
-                                        title = "WiFi Mode",
+                                        title = "وضع WiFi",
                                         value = status.wifiMode,
                                         gradient = WarningGradientColors,
                                         modifier = Modifier.weight(1f)
@@ -166,7 +166,7 @@ fun DashboardScreen(
 
                             // Control Buttons
                             GradientButton(
-                                text = "Refresh Data",
+                                text = "تحديث البيانات",
                                 onClick = { viewModel.refreshStatus() }
                             )
                         }
@@ -185,7 +185,7 @@ fun DashboardScreen(
                 }
 
                 is ConnectionState.Disconnected -> {
-                     ErrorState(message = "Not Connected", onRetry = { viewModel.refreshStatus() })
+                     ErrorState(message = "غير متصل", onRetry = { viewModel.refreshStatus() })
                 }
             }
             
@@ -240,7 +240,7 @@ fun ErrorState(message: String, onRetry: () -> Unit) {
         modifier = Modifier.padding(top = 80.dp)
     ) {
         Text(
-            text = "⚠️ Connection Issue",
+            text = "⚠️ مشكلة في الاتصال",
             style = MaterialTheme.typography.headlineSmall,
             color = AlarmRed,
             fontWeight = FontWeight.Bold
@@ -252,7 +252,7 @@ fun ErrorState(message: String, onRetry: () -> Unit) {
             modifier = Modifier.padding(vertical = 16.dp)
         )
         GradientButton(
-            text = "Retry Connection", 
+            text = "إعادة المحاولة", 
             onClick = onRetry,
             gradient = DangerGradientColors
         )

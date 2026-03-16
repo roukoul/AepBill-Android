@@ -34,32 +34,32 @@ fun AboutScreen() {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "About System",
+                text = "حول النظام",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
                 modifier = Modifier.padding(vertical = 24.dp)
             )
 
-            AboutCard(icon = "🏫", title = "System", value = "Jarras Tinzert")
-            AboutCard(icon = "🏷️", title = "Version", value = "v11.0")
+            AboutCard(icon = "🏫", title = "النظام", value = "Aep")
+            AboutCard(icon = "🏷️", title = "الإصدار", value = "v11.0")
             
             AboutCard(
                 icon = "👨‍🏫", 
-                title = "Developer", 
-                value = "Prof. Eddadssi Ahmed\n(Physique-Chimie)"
+                title = "المطور", 
+                value = "أ. الدادسي أحمد\n(الفيزياء والكيمياء)"
             )
             
             AboutCard(
                 icon = "📍", 
-                title = "Institution", 
-                value = "Lycée Qualifiant Tinzert\nTaroudant, Maroc"
+                title = "المؤسسة", 
+                value = "ثانوية تنزرت التأهيلية\nتارودانت، المغرب"
             )
 
             Spacer(modifier = Modifier.height(32.dp))
             
             Text(
-                text = "© 2026 Tous droits réservés\nEddadssi Ahmed",
+                text = "© 2026 جميع الحقوق محفوظة\nالدادسي أحمد",
                 style = MaterialTheme.typography.bodySmall,
                 color = Color.Gray,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center

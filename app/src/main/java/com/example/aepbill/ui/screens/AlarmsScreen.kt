@@ -23,7 +23,7 @@ import com.example.aepbill.ui.theme.SuccessGreen
 import kotlinx.coroutines.launch
 
 private val DAYS_EN = listOf("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday")
-private val DAYS_FR = listOf("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche")
+private val DAYS_AR = listOf("الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد")
 
 @Composable
 fun AlarmsScreen() {
@@ -70,7 +70,7 @@ fun AlarmsScreen() {
 
             Box(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)) {
                 Text(
-                    text = "Alarm Schedule",
+                    text = "جدول التنبيهات",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
@@ -101,7 +101,7 @@ fun AlarmsScreen() {
                 ) {
                     Icon(
                         imageVector = androidx.compose.material.icons.Icons.Default.Refresh,
-                        contentDescription = "Refresh",
+                        contentDescription = "تحديث",
                         tint = Color.White
                     )
                 }
@@ -116,7 +116,7 @@ fun AlarmsScreen() {
                 }
                 errorMessage != null -> {
                     Text(
-                        text = "Error: $errorMessage",
+                        text = "خطأ: $errorMessage",
                         color = Color.Red,
                         modifier = Modifier.padding(16.dp)
                     )
@@ -125,9 +125,9 @@ fun AlarmsScreen() {
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        items(DAYS_EN.zip(DAYS_FR)) { (dayEn, dayFr) ->
+                        items(DAYS_EN.zip(DAYS_AR)) { (dayEn, dayAr) ->
                             DayCard(
-                                dayName = dayFr,
+                                dayName = dayAr,
                                 alarms = schedule[dayEn] ?: emptyList()
                             )
                         }
@@ -158,7 +158,7 @@ fun DayCard(dayName: String, alarms: List<AlarmEntry>) {
                     color = Color.White
                 )
                 Text(
-                    text = "${alarms.size} alarms",
+                    text = "${alarms.size} تنبيهات",
                     style = MaterialTheme.typography.bodyMedium,
                     color = if (alarms.isNotEmpty()) SuccessGreen else Color.Gray
                 )
@@ -177,7 +177,7 @@ fun DayCard(dayName: String, alarms: List<AlarmEntry>) {
                 }
             } else {
                 Text(
-                    text = "No alarms",
+                    text = "لا توجد تنبيهات",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray,
                     modifier = Modifier.padding(top = 8.dp)
@@ -206,7 +206,7 @@ fun AlarmRow(number: Int, alarm: AlarmEntry) {
         )
         if (alarm.endDay > 0) {
             Text(
-                text = "+1 day",
+                text = "+1 يوم",
                 style = MaterialTheme.typography.bodySmall,
                 color = Color.Yellow
             )

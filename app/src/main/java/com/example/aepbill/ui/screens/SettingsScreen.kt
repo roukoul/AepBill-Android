@@ -40,7 +40,7 @@ fun SettingsScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "WiFi & Connection Configuration",
+            text = "إعدادات الاتصال و WiFi",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 24.dp)
         )
@@ -51,7 +51,7 @@ fun SettingsScreen(
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text("Scan Nearby WiFi Networks", style = MaterialTheme.typography.titleMedium)
+                Text("البحث عن شبكات WiFi قريبة", style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
                     onClick = { viewModel.scanWifi() },
@@ -66,12 +66,12 @@ fun SettingsScreen(
                         )
                         Spacer(Modifier.width(8.dp))
                     }
-                    Text(if (isScanning) "Scanning..." else "Scan for Networks")
+                    Text(if (isScanning) "جاري البحث..." else "البحث عن الشبكات")
                 }
 
                 if (wifiNetworks.isNotEmpty()) {
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("Select a Network:", style = MaterialTheme.typography.bodySmall)
+                    Text("اختر شبكة:", style = MaterialTheme.typography.bodySmall)
                     wifiNetworks.forEach { network ->
                         Row(
                             modifier = Modifier
@@ -98,7 +98,7 @@ fun SettingsScreen(
         OutlinedTextField(
             value = ssid,
             onValueChange = { ssid = it },
-            label = { Text("WiFi SSID") },
+            label = { Text("اسم الشبكة (SSID)") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -108,7 +108,7 @@ fun SettingsScreen(
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("WiFi Password") },
+            label = { Text("كلمة مرور WiFi") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -120,8 +120,8 @@ fun SettingsScreen(
         OutlinedTextField(
             value = ipAddress,
             onValueChange = { viewModel.updateIpAddress(it) },
-            label = { Text("ESP32 IP Address / Hostname") },
-            placeholder = { Text("aepbill.local or 192.168.4.1") },
+            label = { Text("عنوان IP أو اسم المضيف للجهاز") },
+            placeholder = { Text("aepbill.local أو 192.168.4.1") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -131,7 +131,7 @@ fun SettingsScreen(
         OutlinedTextField(
             value = port,
             onValueChange = { viewModel.updatePort(it) },
-            label = { Text("HTTPS Port") },
+            label = { Text("منفذ HTTPS") },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             singleLine = true
@@ -152,7 +152,7 @@ fun SettingsScreen(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
             }
-            Text(if (isTestingConnection) "Connecting..." else "Test & Save Connection")
+            Text(if (isTestingConnection) "جاري الاتصال..." else "اختبار وحفظ الاتصال")
         }
 
         Spacer(modifier = Modifier.height(24.dp))
