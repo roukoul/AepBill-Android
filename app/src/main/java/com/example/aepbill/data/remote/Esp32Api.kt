@@ -14,6 +14,9 @@ interface Esp32Api {
     @GET("status")
     suspend fun getStatus(): Response<StatusResponse>
 
+    @GET("api/health")
+    suspend fun getHealth(): Response<com.example.aepbill.data.model.HealthResponse>
+
     @GET("wifi_scan")
     suspend fun getWifiScan(): Response<com.example.aepbill.data.model.WifiScanResponse>
 

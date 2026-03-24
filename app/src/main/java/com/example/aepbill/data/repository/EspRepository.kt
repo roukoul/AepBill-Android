@@ -29,6 +29,15 @@ class EspRepository(
         }
     }
 
+    suspend fun getHealth(): com.example.aepbill.data.model.HealthResponse? {
+        return try {
+            val response = api.getHealth()
+            if (response.isSuccessful) response.body() else null
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     suspend fun getWifiScan(): Result<com.example.aepbill.data.model.WifiScanResponse> {
         return try {
             val response = api.getWifiScan()

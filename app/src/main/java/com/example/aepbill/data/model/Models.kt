@@ -2,6 +2,12 @@ package com.example.aepbill.data.model
 
 import com.google.gson.annotations.SerializedName
 
+data class HealthResponse(
+    val health: Float,
+    val temp: Float,
+    val status: String
+)
+
 data class StatusResponse(
     val relay: Int,
     val relay2: Int,
