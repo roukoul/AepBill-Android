@@ -156,6 +156,104 @@ fun SettingsScreen(
         }
 
         Spacer(modifier = Modifier.height(24.dp))
+        Divider()
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Energy Management Section
+        val powerSettings by viewModel.powerSettings.collectAsState()
+        val isUpdatingPower by viewModel.isUpdatingPower.collectAsState()
+
+        Card(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("⚡ إدارة الطاقة (Eco-Energy)", style = MaterialTheme.typography.titleMedium)
+                Spacer(modifier = Modifier.height(16.dp))
+
+                var selectedMode by remember(powerSettings) { mutableStateOf(powerSettings?.mode ?: 0) }
+                var startHour by remember(powerSettings) { mutableStateOf(powerSettings?.startHour ?: 23) }
+                var startMin by remember(powerSettings) { mutableStateOf(powerSettings?.startMin ?: 0) }
+                var endHour by remember(powerSettings) { mutableStateOf(powerSettings?.endHour ?: 6) }
+                var endMin by remember(powerSettings) { mutableStateOf(powerSettings?.endMin ?: 0) }
+
+                Text("وضع التشغيل:", style = MaterialTheme.typography.bodyMedium)
+                Column {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(selected = selectedMode == 0, onClick = { selectedMode = 0 })
+                        Text("عادي (Normal)", modifier = Modifier.clickable { selectedMode = 0 })
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(selected = selectedMode == 1, onClick = { selectedMode = 1 })
+                        Text("توفير (Modem Sleep)", modifier = Modifier.clickable { selectedMode = 1 })
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(selected = selectedMode == 2, onClick = { selectedMode = 2 })
+                        Text("Veille (Deep Sleep)", modifier = Modifier.clickable { selectedMode = 2 })
+                    }
+                }
+
+                if (selectedMode == 2) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text("وقت النوم التلقائي:", style = MaterialTheme.typography.bodySmall)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("من", style = MaterialTheme.typography.bodySmall)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                OutlinedTextField(
+                                    value = startHour.toString(),
+                                    onValueChange = { startHour = it.toIntOrNull() ?: 0 },
+                                    modifier = Modifier.width(60.dp),
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                                )
+                                Text(":")
+                                OutlinedTextField(
+                                    value = startMin.toString(),
+                                    onValueChange = { startMin = it.toIntOrNull() ?: 0 },
+                                    modifier = Modifier.width(60.dp),
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                                )
+                            }
+                        }
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("إلى", style = MaterialTheme.typography.bodySmall)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                OutlinedTextField(
+                                    value = endHour.toString(),
+                                    onValueChange = { endHour = it.toIntOrNull() ?: 0 },
+                                    modifier = Modifier.width(60.dp),
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                                )
+                                Text(":")
+                                OutlinedTextField(
+                                    value = endMin.toString(),
+                                    onValueChange = { endMin = it.toIntOrNull() ?: 0 },
+                                    modifier = Modifier.width(60.dp),
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                                )
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = { viewModel.updatePowerSettings(selectedMode, startHour, startMin, endHour, endMin) },
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = !isUpdatingPower
+                ) {
+                    if (isUpdatingPower) {
+                        CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White)
+                        Spacer(Modifier.width(8.dp))
+                    }
+                    Text("حفظ إعدادات الطاقة")
+                }
+            }
+        }
 
         connectionStatus?.let { status ->
             Card(

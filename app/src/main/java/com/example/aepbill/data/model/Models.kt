@@ -50,3 +50,11 @@ data class WifiNetwork(
 data class WifiScanResponse(
     val networks: List<WifiNetwork>
 )
+
+data class PowerResponse(
+    val mode: Int,
+    @SerializedName("start_hour") val startHour: Int,
+    @SerializedName("start_min") val startMin: Int,
+    @SerializedName("end_hour") val endHour: Int,
+    @SerializedName("end_min") val endMin: Int
+)

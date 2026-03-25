@@ -103,6 +103,32 @@ class EspRepository(
         }
     }
 
+    suspend fun getPower(): Result<com.example.aepbill.data.model.PowerResponse> {
+        return try {
+            val response = api.getPower()
+            if (response.isSuccessful && response.body() != null) {
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(Exception("Error loading power settings"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun updatePower(power: com.example.aepbill.data.model.PowerResponse): Result<Boolean> {
+        return try {
+            val response = api.updatePower(power)
+            if (response.isSuccessful) {
+                Result.success(true)
+            } else {
+                Result.failure(Exception("Update power failed"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     suspend fun factoryReset(): Result<Boolean> {
         return try {
             val response = api.factoryReset()
