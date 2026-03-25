@@ -165,7 +165,7 @@ fun DashboardScreen(
                             state.health?.let { healthData ->
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Card(
-                                    modifier = Modifier.fillMaxWidth().height(110.dp),
+                                    modifier = Modifier.fillMaxWidth().height(130.dp),
                                     shape = RoundedCornerShape(20.dp),
                                     colors = CardDefaults.cardColors(containerColor = SurfaceDark),
                                     elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
@@ -176,13 +176,24 @@ fun DashboardScreen(
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
                                         Text(text = "🩺 الصيانة الوقائية (الرولي)", style = MaterialTheme.typography.labelLarge, color = Color.Gray)
-                                        Spacer(modifier = Modifier.height(8.dp))
+                                        Spacer(modifier = Modifier.height(6.dp))
                                         val healthColor = if (healthData.health > 20) SuccessGradientColors else DangerGradientColors
                                         Text(
                                             text = "${String.format("%.1f", healthData.health)}% | ${String.format("%.1f", healthData.temp)}°C",
                                             fontWeight = FontWeight.Bold,
                                             color = Color.Transparent,
                                             style = TextStyle(brush = Brush.linearGradient(healthColor)).merge(MaterialTheme.typography.titleLarge)
+                                        )
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        val daysText = when {
+                                            healthData.daysRemaining == null || healthData.daysRemaining >= 9999 -> "⏳ نشاط غير كافٍ للتقدير"
+                                            healthData.daysRemaining <= 0 -> "🔴 الحالة حرجة - استبدال فوري"
+                                            else -> "📅 متبقي تقريباً: ${healthData.daysRemaining} يوم"
+                                        }
+                                        Text(
+                                            text = daysText,
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = Color.Gray
                                         )
                                     }
                                 }

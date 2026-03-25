@@ -5,7 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class HealthResponse(
     val health: Float,
     val temp: Float,
-    val status: String
+    val status: String,
+    @SerializedName("days_remaining") val daysRemaining: Int? = null
 )
 
 data class StatusResponse(
