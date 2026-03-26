@@ -112,11 +112,13 @@ class SettingsViewModel : ViewModel() {
         }
     }
 
-    fun updatePowerSettings(mode: Int, startH: Int, startM: Int, endH: Int, endM: Int) {
+    fun updatePowerSettings(mode: Int, startH: Int, startM: Int, endH: Int, endM: Int, 
+                            sDay: Int? = null, sMonth: Int? = null, sYear: Int? = null,
+                            eDay: Int? = null, eMonth: Int? = null, eYear: Int? = null) {
         viewModelScope.launch {
             _isUpdatingPower.value = true
             try {
-                val newPower = com.example.aepbill.data.model.PowerResponse(mode, startH, startM, endH, endM)
+                val newPower = com.example.aepbill.data.model.PowerResponse(mode, startH, startM, endH, endM, 0, 0, sDay, sMonth, sYear, eDay, eMonth, eYear)
                 val result = espRepository.updatePower(newPower)
                 if (result.isSuccess) {
                     _powerSettings.value = newPower

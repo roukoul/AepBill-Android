@@ -56,5 +56,13 @@ data class PowerResponse(
     @SerializedName("start_hour") val startHour: Int,
     @SerializedName("start_min") val startMin: Int,
     @SerializedName("end_hour") val endHour: Int,
-    @SerializedName("end_min") val endMin: Int
+    @SerializedName("end_min") val endMin: Int,
+    @SerializedName("start_sec") val startSec: Int? = null,
+    @SerializedName("end_sec") val endSec: Int? = null,
+    @SerializedName("start_day") val startDay: Int? = null,
+    @SerializedName("start_month") val startMonth: Int? = null,
+    @SerializedName("start_year") val startYear: Int? = null,
+    @SerializedName("end_day") val endDay: Int? = null,
+    @SerializedName("end_month") val endMonth: Int? = null,
+    @SerializedName("end_year") val endYear: Int? = null
 )
