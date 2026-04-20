@@ -10,6 +10,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -159,8 +161,60 @@ fun DashboardScreen(
                                 }
                             }
                             
-                            // Anomaly Warning Card (only show if anomaly detected)
-                            // Anomaly Warning Card - REMOVED in Classic
+                            // Predictive Maintenance Health Card
+                            state.health?.let { healthData ->
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Card(
+                                    modifier = Modifier.fillMaxWidth().height(130.dp),
+                                    shape = RoundedCornerShape(20.dp),
+                                    colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+                                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                                ) {
+                                    Column(
+                                        modifier = Modifier.fillMaxSize().padding(16.dp),
+                                        verticalArrangement = Arrangement.Center,
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        Text(text = "🩺 الصيانة الوقائية (الرولي)", style = MaterialTheme.typography.labelLarge, color = Color.Gray)
+                                        Spacer(modifier = Modifier.height(6.dp))
+                                        val healthColor = if (healthData.health > 20) SuccessGradientColors else DangerGradientColors
+                                        Text(
+                                            text = "${String.format("%.1f", healthData.health)}% | ${String.format("%.1f", healthData.temp)}°C",
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color.Transparent,
+                                            style = TextStyle(brush = Brush.linearGradient(healthColor)).merge(MaterialTheme.typography.titleLarge)
+                                        )
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        val daysText = when {
+                                            healthData.daysRemaining == null || healthData.daysRemaining >= 9999 -> "⏳ نشاط غير كافٍ للتقدير"
+                                            healthData.daysRemaining <= 0 -> "🔴 الحالة حرجة - استبدال فوري"
+                                            else -> "📅 متبقي تقريباً: ${healthData.daysRemaining} يوم"
+                                        }
+                                        Text(
+                                            text = daysText,
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = Color.Gray
+                                        )
+                                    }
+                                }
+
+                                if (healthData.health <= 20f || healthData.status == "critical") {
+                                    var showDialog by remember { mutableStateOf(true) }
+                                    if (showDialog) {
+                                        AlertDialog(
+                                            onDismissRequest = { showDialog = false },
+                                            title = { Text("⚠️ تحذير حرج: صيانة النظام", color = AlarmRed) },
+                                            text = { Text("صحة المُرحّل (الرولي) منخفضة جداً (${String.format("%.1f", healthData.health)}%). النظام معرض للتوقف الفجائي أو الحرارة المرتفعة (${String.format("%.1f", healthData.temp)}°C). يرجى استبداله فوراً لتجنب العطل.", color = Color.White) },
+                                            confirmButton = {
+                                                TextButton(onClick = { showDialog = false }) { Text("موافق", color = WarningYellow) }
+                                            },
+                                            containerColor = SurfaceDark,
+                                            titleContentColor = AlarmRed,
+                                            textContentColor = Color.White
+                                        )
+                                    }
+                                }
+                            }
                             
                             Spacer(modifier = Modifier.height(32.dp))
 

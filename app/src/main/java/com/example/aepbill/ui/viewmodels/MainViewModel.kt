@@ -13,7 +13,10 @@ import kotlinx.coroutines.launch
 sealed class ConnectionState {
     object Disconnected : ConnectionState()
     object Connecting : ConnectionState()
-    data class Connected(val status: Status) : ConnectionState()
+    data class Connected(
+        val status: Status,
+        val health: com.example.aepbill.data.model.HealthResponse? = null
+    ) : ConnectionState()
     data class Error(val message: String) : ConnectionState()
 }
 
@@ -51,7 +54,8 @@ class MainViewModel : ViewModel() {
 
             try {
                 val status = espRepository.getStatus()
-                _connectionState.value = ConnectionState.Connected(status)
+                val health = espRepository.getHealth()
+                _connectionState.value = ConnectionState.Connected(status, health)
             } catch (e: Exception) {
                 _connectionState.value = ConnectionState.Error(
                     e.message ?: "Unknown error occurred"

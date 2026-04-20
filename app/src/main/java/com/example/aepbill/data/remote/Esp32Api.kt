@@ -14,6 +14,9 @@ interface Esp32Api {
     @GET("status")
     suspend fun getStatus(): Response<StatusResponse>
 
+    @GET("api/health")
+    suspend fun getHealth(): Response<com.example.aepbill.data.model.HealthResponse>
+
     @GET("wifi_scan")
     suspend fun getWifiScan(): Response<com.example.aepbill.data.model.WifiScanResponse>
 
@@ -25,6 +28,12 @@ interface Esp32Api {
 
     @POST("api/settings")
     suspend fun updateSettings(@Body settings: SettingsResponse): Response<Void>
+
+    @GET("api/power")
+    suspend fun getPower(): Response<com.example.aepbill.data.model.PowerResponse>
+
+    @POST("api/power")
+    suspend fun updatePower(@Body power: com.example.aepbill.data.model.PowerResponse): Response<Void>
 
     @GET("restart")
     suspend fun restart(@Query("confirm") confirm: String = "yes"): Response<Void>

@@ -156,6 +156,167 @@ fun SettingsScreen(
         }
 
         Spacer(modifier = Modifier.height(24.dp))
+        Divider()
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Energy Management Section
+        val powerSettings by viewModel.powerSettings.collectAsState()
+        val isUpdatingPower by viewModel.isUpdatingPower.collectAsState()
+
+        Card(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("⚡ إدارة الطاقة (Eco-Energy)", style = MaterialTheme.typography.titleMedium)
+                Spacer(modifier = Modifier.height(16.dp))
+
+                var selectedMode by remember(powerSettings) { mutableStateOf(powerSettings?.mode ?: 0) }
+                var startHour by remember(powerSettings) { mutableStateOf(powerSettings?.startHour ?: 23) }
+                var startMin by remember(powerSettings) { mutableStateOf(powerSettings?.startMin ?: 0) }
+                var endHour by remember(powerSettings) { mutableStateOf(powerSettings?.endHour ?: 6) }
+                var endMin by remember(powerSettings) { mutableStateOf(powerSettings?.endMin ?: 0) }
+
+                var startDay by remember(powerSettings) { mutableStateOf(powerSettings?.startDay ?: 1) }
+                var startMonth by remember(powerSettings) { mutableStateOf(powerSettings?.startMonth ?: 1) }
+                var startYear by remember(powerSettings) { mutableStateOf(powerSettings?.startYear ?: 2026) }
+                var endDay by remember(powerSettings) { mutableStateOf(powerSettings?.endDay ?: 1) }
+                var endMonth by remember(powerSettings) { mutableStateOf(powerSettings?.endMonth ?: 1) }
+                var endYear by remember(powerSettings) { mutableStateOf(powerSettings?.endYear ?: 2026) }
+
+                Text("وضع التشغيل:", style = MaterialTheme.typography.bodyMedium)
+                Column {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(selected = selectedMode == 0, onClick = { selectedMode = 0 })
+                        Text("عادي (Normal)", modifier = Modifier.clickable { selectedMode = 0 })
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(selected = selectedMode == 1, onClick = { selectedMode = 1 })
+                        Text("توفير (Modem Sleep)", modifier = Modifier.clickable { selectedMode = 1 })
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(selected = selectedMode == 2, onClick = { selectedMode = 2 })
+                        Text("يومي (Deep Sleep)", modifier = Modifier.clickable { selectedMode = 2 })
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(selected = selectedMode == 3, onClick = { selectedMode = 3 })
+                        Text("عطلة (Holiday Mode)", modifier = Modifier.clickable { selectedMode = 3 })
+                    }
+                }
+
+                if (selectedMode == 2) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text("وقت النوم التلقائي:", style = MaterialTheme.typography.bodySmall)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("من", style = MaterialTheme.typography.bodySmall)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                OutlinedTextField(
+                                    value = startHour.toString(),
+                                    onValueChange = { startHour = it.toIntOrNull() ?: 0 },
+                                    modifier = Modifier.width(60.dp),
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                                )
+                                Text(":")
+                                OutlinedTextField(
+                                    value = startMin.toString(),
+                                    onValueChange = { startMin = it.toIntOrNull() ?: 0 },
+                                    modifier = Modifier.width(60.dp),
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                                )
+                            }
+                        }
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("إلى", style = MaterialTheme.typography.bodySmall)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                OutlinedTextField(
+                                    value = endHour.toString(),
+                                    onValueChange = { endHour = it.toIntOrNull() ?: 0 },
+                                    modifier = Modifier.width(60.dp),
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                                )
+                                Text(":")
+                                OutlinedTextField(
+                                    value = endMin.toString(),
+                                    onValueChange = { endMin = it.toIntOrNull() ?: 0 },
+                                    modifier = Modifier.width(60.dp),
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                                )
+                            }
+                        }
+                    }
+                }
+
+                if (selectedMode == 3) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text("وقت وتاريخ العطلة:", style = MaterialTheme.typography.bodySmall)
+                    
+                    // Start Date
+                    Text("من:", style = MaterialTheme.typography.labelSmall)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        OutlinedTextField(value = startYear.toString(), onValueChange = { startYear = it.toIntOrNull() ?: 2026 }, modifier = Modifier.weight(1.2f), label = { Text("السنة") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                        Spacer(modifier = Modifier.width(4.dp))
+                        OutlinedTextField(value = startMonth.toString(), onValueChange = { startMonth = it.toIntOrNull() ?: 1 }, modifier = Modifier.weight(1f), label = { Text("الشهر") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                        Spacer(modifier = Modifier.width(4.dp))
+                        OutlinedTextField(value = startDay.toString(), onValueChange = { startDay = it.toIntOrNull() ?: 1 }, modifier = Modifier.weight(1f), label = { Text("اليوم") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        OutlinedTextField(value = startHour.toString(), onValueChange = { startHour = it.toIntOrNull() ?: 0 }, modifier = Modifier.width(60.dp), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                        Text(" : ", modifier = Modifier.padding(horizontal = 8.dp))
+                        OutlinedTextField(value = startMin.toString(), onValueChange = { startMin = it.toIntOrNull() ?: 0 }, modifier = Modifier.width(60.dp), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                    // End Date
+                    Text("إلى:", style = MaterialTheme.typography.labelSmall)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        OutlinedTextField(value = endYear.toString(), onValueChange = { endYear = it.toIntOrNull() ?: 2026 }, modifier = Modifier.weight(1.2f), label = { Text("السنة") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                        Spacer(modifier = Modifier.width(4.dp))
+                        OutlinedTextField(value = endMonth.toString(), onValueChange = { endMonth = it.toIntOrNull() ?: 1 }, modifier = Modifier.weight(1f), label = { Text("الشهر") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                        Spacer(modifier = Modifier.width(4.dp))
+                        OutlinedTextField(value = endDay.toString(), onValueChange = { endDay = it.toIntOrNull() ?: 1 }, modifier = Modifier.weight(1f), label = { Text("اليوم") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        OutlinedTextField(value = endHour.toString(), onValueChange = { endHour = it.toIntOrNull() ?: 0 }, modifier = Modifier.width(60.dp), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                        Text(" : ", modifier = Modifier.padding(horizontal = 8.dp))
+                        OutlinedTextField(value = endMin.toString(), onValueChange = { endMin = it.toIntOrNull() ?: 0 }, modifier = Modifier.width(60.dp), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = { viewModel.updatePowerSettings(selectedMode, startHour, startMin, endHour, endMin, startDay, startMonth, startYear, endDay, endMonth, endYear) },
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = !isUpdatingPower
+                ) {
+                    if (isUpdatingPower) {
+                        CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White)
+                        Spacer(Modifier.width(8.dp))
+                    }
+                    Text("حفظ إعدادات الطاقة")
+                }
+            }
+        }
 
         connectionStatus?.let { status ->
             Card(

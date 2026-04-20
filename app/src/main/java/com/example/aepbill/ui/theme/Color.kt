@@ -8,6 +8,7 @@ val DarkBackground = Color(0xFF1A1A2E)
 val SurfaceDark = Color(0xFF16213E)
 val TextWhite = Color(0xFFEEEEEE)
 val WarningOrange = Color(0xFFF39C12)
+val WarningYellow = Color(0xFFF1C40F)
 val AlarmRed = Color(0xFFE74C3C)
 val SuccessGreen = Color(0xFF2ECC71)
 
