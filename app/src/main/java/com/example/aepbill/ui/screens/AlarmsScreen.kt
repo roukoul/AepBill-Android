@@ -189,9 +189,18 @@ fun DayCard(dayName: String, alarms: List<AlarmEntry>) {
 
 @Composable
 fun AlarmRow(number: Int, alarm: AlarmEntry) {
+    val relayName = when (alarm.relay) {
+        0 -> "S"
+        1 -> "A"
+        2 -> "B"
+        3 -> "C"
+        else -> "${alarm.relay}"
+    }
+
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = "#$number",
@@ -200,7 +209,7 @@ fun AlarmRow(number: Int, alarm: AlarmEntry) {
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "${alarm.start} → ${alarm.end}",
+            text = "مرحل $relayName | ${alarm.start} → ${alarm.end}",
             style = MaterialTheme.typography.bodyMedium,
             color = Color.White
         )

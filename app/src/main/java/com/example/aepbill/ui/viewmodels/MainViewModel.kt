@@ -15,7 +15,8 @@ sealed class ConnectionState {
     object Connecting : ConnectionState()
     data class Connected(
         val status: Status,
-        val health: com.example.aepbill.data.model.HealthResponse? = null
+        val health: com.example.aepbill.data.model.HealthResponse? = null,
+        val power: com.example.aepbill.data.model.PowerResponse? = null
     ) : ConnectionState()
     data class Error(val message: String) : ConnectionState()
 }
@@ -55,7 +56,8 @@ class MainViewModel : ViewModel() {
             try {
                 val status = espRepository.getStatus()
                 val health = espRepository.getHealth()
-                _connectionState.value = ConnectionState.Connected(status, health)
+                val power = espRepository.getPower().getOrNull()
+                _connectionState.value = ConnectionState.Connected(status, health, power)
             } catch (e: Exception) {
                 _connectionState.value = ConnectionState.Error(
                     e.message ?: "Unknown error occurred"
