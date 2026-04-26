@@ -64,5 +64,16 @@ data class PowerResponse(
     @SerializedName("start_year") val startYear: Int? = null,
     @SerializedName("end_day") val endDay: Int? = null,
     @SerializedName("end_month") val endMonth: Int? = null,
-    @SerializedName("end_year") val endYear: Int? = null
+    @SerializedName("end_year") val endYear: Int? = null,
+    @SerializedName("weekly_schedule") val weeklySchedule: List<DailySleepWindow>? = null
+)
+
+data class DailySleepWindow(
+    @SerializedName("enabled") val enabled: Boolean,
+    @SerializedName("start_hour") val startHour: Int,
+    @SerializedName("start_min") val startMin: Int,
+    @SerializedName("start_sec") val startSec: Int,
+    @SerializedName("end_hour") val endHour: Int,
+    @SerializedName("end_min") val endMin: Int,
+    @SerializedName("end_sec") val endSec: Int
 )

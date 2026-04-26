@@ -184,6 +184,13 @@ fun SettingsScreen(
                 var endMonth by remember(powerSettings) { mutableStateOf(powerSettings?.endMonth ?: 1) }
                 var endYear by remember(powerSettings) { mutableStateOf(powerSettings?.endYear ?: 2026) }
 
+                val weeklySchedule = remember(powerSettings) {
+                    val initialList = powerSettings?.weeklySchedule ?: List(7) {
+                        com.example.aepbill.data.model.DailySleepWindow(false, 23, 0, 0, 6, 0, 0)
+                    }
+                    androidx.compose.runtime.mutableStateListOf(*initialList.toTypedArray())
+                }
+
                 Text("وضع التشغيل:", style = MaterialTheme.typography.bodyMedium)
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -201,6 +208,10 @@ fun SettingsScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         RadioButton(selected = selectedMode == 3, onClick = { selectedMode = 3 })
                         Text("عطلة (Holiday Mode)", modifier = Modifier.clickable { selectedMode = 3 })
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(selected = selectedMode == 4, onClick = { selectedMode = 4 })
+                        Text("أسبوعي (Weekly Mode)", modifier = Modifier.clickable { selectedMode = 4 })
                     }
                 }
 
@@ -303,9 +314,50 @@ fun SettingsScreen(
                     }
                 }
 
+                if (selectedMode == 4) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text("إعدادات النوم الأسبوعي (من - إلى):", style = MaterialTheme.typography.bodySmall)
+                    val days = listOf("الأحد (Sun)", "الإثنين (Mon)", "الثلاثاء (Tue)", "الأربعاء (Wed)", "الخميس (Thu)", "الجمعة (Fri)", "السبت (Sat)")
+                    days.forEachIndexed { i, dayName ->
+                        val day = weeklySchedule[i]
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
+                                Checkbox(
+                                    checked = day.enabled,
+                                    onCheckedChange = { chk -> weeklySchedule[i] = day.copy(enabled = chk) }
+                                )
+                                Text(dayName, style = MaterialTheme.typography.bodySmall)
+                            }
+                            if (day.enabled) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    OutlinedTextField(
+                                        value = day.startHour.toString(),
+                                        onValueChange = { h -> weeklySchedule[i] = day.copy(startHour = h.toIntOrNull() ?: 0) },
+                                        modifier = Modifier.width(60.dp).height(50.dp),
+                                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                        singleLine = true
+                                    )
+                                    Text(" : ", modifier = Modifier.padding(horizontal = 4.dp))
+                                    OutlinedTextField(
+                                        value = day.endHour.toString(),
+                                        onValueChange = { h -> weeklySchedule[i] = day.copy(endHour = h.toIntOrNull() ?: 0) },
+                                        modifier = Modifier.width(60.dp).height(50.dp),
+                                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                        singleLine = true
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
-                    onClick = { viewModel.updatePowerSettings(selectedMode, startHour, startMin, endHour, endMin, startDay, startMonth, startYear, endDay, endMonth, endYear) },
+                    onClick = { viewModel.updatePowerSettings(selectedMode, startHour, startMin, endHour, endMin, startDay, startMonth, startYear, endDay, endMonth, endYear, weeklySchedule.toList()) },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = !isUpdatingPower
                 ) {
