@@ -146,7 +146,7 @@ fun DashboardScreen(
                                         modifier = Modifier.weight(1f)
                                     )
                                 }
-                                // System Info Row 2: Wifi Mode
+                                // System Info Row 2: Wifi Mode and Energy Mode
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -157,7 +157,19 @@ fun DashboardScreen(
                                         gradient = WarningGradientColors,
                                         modifier = Modifier.weight(1f)
                                     )
-                                    Spacer(modifier = Modifier.weight(1f))
+                                    val powerModeText = when(state.power?.mode) {
+                                        0 -> "عادي" // Normal
+                                        1 -> "اقتصادي" // Eco
+                                        2 -> "تخفي" // Stealth
+                                        3 -> "عطلة" // Holiday
+                                        else -> "--"
+                                    }
+                                    InfoCard(
+                                        title = "وضع الطاقة",
+                                        value = powerModeText,
+                                        gradient = WarningGradientColors,
+                                        modifier = Modifier.weight(1f)
+                                    )
                                 }
                             }
                             

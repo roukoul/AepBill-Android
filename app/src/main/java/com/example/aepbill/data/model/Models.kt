@@ -48,7 +48,7 @@ data class WifiNetwork(
 )
 
 data class WifiScanResponse(
-    val networks: List<WifiNetwork>
+    @SerializedName("aps") val networks: List<WifiNetwork>
 )
 
 data class PowerResponse(
